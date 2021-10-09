@@ -29,61 +29,82 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class robotHardware
 {
-    /* Public OpMode members. */
-    public DcMotor  leftDrive   = null;
-    public DcMotor  rightDrive  = null;
-    public DcMotor  leftArm     = null;
-    public Servo    leftClaw    = null;
-    public Servo    rightClaw   = null;
 
-    public static final double MID_SERVO       =  0.5 ;
-    public static final double ARM_UP_POWER    =  0.45 ;
-    public static final double ARM_DOWN_POWER  = -0.45 ;
+    // Drive Members
+    public DcMotorEx leftFront = null;
+    public DcMotorEx leftRear = null;
+    public DcMotorEx rightRear = null;
+    public DcMotorEx rightFront = null;
 
-    /* local OpMode members. */
-    HardwareMap hwMap           =  null;
-    private ElapsedTime period  = new ElapsedTime();
+    // Intake Members
+    public DcMotorEx topIntake = null;
+    public DcMotorEx bottomIntake = null;
+
+    // Stacker Members
+    public DcMotorEx stackerMotor = null;
+    public Servo stackerFront = null;
+    public Servo stackerRear = null;
+
+    // Other Members
+    public DcMotorEx carouselMotor = null;
+
+    // Local Members
+    HardwareMap hwMap = null;
+    private ElapsedTime period = new ElapsedTime();
 
     /* Constructor */
     public robotHardware(){
 
     }
 
-    /* Initialize standard Hardware interfaces */
+    // Run On INIT
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
 
-        // Define and Initialize Motors
-        leftDrive  = hwMap.get(DcMotor.class, "left_drive");
-        rightDrive = hwMap.get(DcMotor.class, "right_drive");
-        leftArm    = hwMap.get(DcMotor.class, "left_arm");
-        leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        // Define and Initialize Drive Motors
+        leftFront = hwMap.get(DcMotorEx.class, "leftFront");
+        leftRear = hwMap.get(DcMotorEx.class, "leftRear");
+        rightRear = hwMap.get(DcMotorEx.class, "rightRear");
+        rightFront = hwMap.get(DcMotorEx.class, "rightFront");
+
+        // Initialize Intake
+        topIntake  = hwMap.get(DcMotorEx.class, "topIntake");
+        bottomIntake = hwMap.get(DcMotorEx.class, "bottomIntake");
+
+        // Initialize Stacker
+        stackerMotor = hwMap.get(DcMotorEx.class, "stackerMotor");
+        stackerFront = hwMap.get(Servo.class, "stackerFront");
+        stackerRear = hwMap.get(Servo.class, "stackerRear");
+
+        // Initialize Other Things
+        carouselMotor = hwMap.get(DcMotorEx.class, "carouselMotor");
+
+        // TODO: Reverse Motors
 
         // Set all motors to zero power
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
-        leftArm.setPower(0);
+        leftFront.setPower(0);
+        leftRear.setPower(0);
+        rightRear.setPower(0);
+        rightFront.setPower(0);
+        topIntake.setPower(0);
+        bottomIntake.setPower(0);
+        stackerMotor.setPower(0);
+        carouselMotor.setPower(0);
 
-        // Set all motors to run without encoders.
-        // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // Set Servo Positions
+        stackerFront.setPosition(0);
+        stackerRear.setPosition(0);
 
-        // Define and initialize ALL installed servos.
-        leftClaw  = hwMap.get(Servo.class, "left_hand");
-        rightClaw = hwMap.get(Servo.class, "right_hand");
-        leftClaw.setPosition(MID_SERVO);
-        rightClaw.setPosition(MID_SERVO);
+        // TODO: Set motors to run with or without encoders.
+
     }
  }
 
