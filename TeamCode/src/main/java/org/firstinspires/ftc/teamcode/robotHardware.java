@@ -32,7 +32,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.imuStuff.imu;
 
 public class robotHardware
 {
@@ -51,9 +54,11 @@ public class robotHardware
     public DcMotorEx stackerMotor = null;
     public Servo stackerFront = null;
     public Servo stackerRear = null;
+    public TouchSensor stackerLimit = null;
 
     // Other Members
     public DcMotorEx carouselMotor = null;
+    public imu imu = new imu();
 
     // Local Members
     HardwareMap hwMap = null;
@@ -83,11 +88,19 @@ public class robotHardware
         stackerMotor = hwMap.get(DcMotorEx.class, "stackerMotor");
         stackerFront = hwMap.get(Servo.class, "stackerFront");
         stackerRear = hwMap.get(Servo.class, "stackerRear");
+        stackerLimit = hwMap.get(TouchSensor.class, "stackerLimit");
 
         // Initialize Other Things
         carouselMotor = hwMap.get(DcMotorEx.class, "carouselMotor");
 
         // TODO: Reverse Motors
+        topIntake.setDirection(DcMotorEx.Direction.REVERSE);
+        bottomIntake.setDirection(DcMotorEx.Direction.REVERSE);
+
+        leftFront.setDirection(DcMotorEx.Direction.FORWARD);
+        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
+        leftRear.setDirection(DcMotorEx.Direction.FORWARD);
+        rightRear.setDirection(DcMotorEx.Direction.REVERSE);
 
         // Set all motors to zero power
         leftFront.setPower(0);
@@ -102,6 +115,9 @@ public class robotHardware
         // Set Servo Positions
         stackerFront.setPosition(0);
         stackerRear.setPosition(0);
+
+        // Initialize IMU
+        imu.initIMU(hwMap);
 
         // TODO: Set motors to run with or without encoders.
 
